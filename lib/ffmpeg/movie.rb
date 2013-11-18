@@ -8,12 +8,14 @@ module FFMPEG
     attr_reader :container
 
     def initialize(path)
-      raise Errno::ENOENT, "the file '#{path}' does not exist" unless File.exists?(path)
+      # raise Errno::ENOENT, "the file '#{path}' does not exist" unless File.exists?(path)
 
       @path = path
 
       # ffmpeg will output to stderr
-      command = "#{FFMPEG.ffmpeg_binary} -i #{Shellwords.escape(path)}"
+      # command = "#{FFMPEG.ffmpeg_binary} -i #{Shellwords.escape(path)}"
+      command = "#{FFMPEG.ffmpeg_binary} -i #{path}"
+
       output = Open3.popen3(command) { |stdin, stdout, stderr| stderr.read }
 
       fix_encoding(output)
@@ -82,7 +84,7 @@ module FFMPEG
     end
 
     def size
-      File.size(@path)
+      # File.size(@path)
     end
 
     def audio_channels
